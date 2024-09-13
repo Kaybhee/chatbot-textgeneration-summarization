@@ -7,4 +7,4 @@ unoconv
 pdfplumber
 python-dotenv
 matplotlib
-pptx
+python-pptx
