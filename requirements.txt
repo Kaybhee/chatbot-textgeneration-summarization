@@ -6,3 +6,4 @@ transformers
 unoconv
 pdfplumber
 python-dotenv
+matplotlib
