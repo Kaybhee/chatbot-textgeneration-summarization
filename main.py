@@ -159,11 +159,11 @@ def generate_response_with_groq(prompt, context):
     return completion.choices[0].message.content
 
 st.sidebar.title("Choose Functionality")
-option = st.sidebar.radio("Select an option", ["Text Generation", "Text Summarization", "Data Visualization", "Chat with Research Assistant"])
+option = st.sidebar.radio("Select an option", ["Text Generation", "Text Summarization", "Data Visualization", "Chat with Your Document"])
 
 if option == "Text Generation":
-    st.title("Engineering Research Assistant")
-    prompt = st.text_input("Enter a prompt related to petroleum or engineering:")
+    st.title("Question and answering chatbot")
+    prompt = st.text_input("Enter a any prompt of your choice:")
     if st.button("Generate Text"):
         if prompt:
             generate_text_with_groq_streaming(prompt)
@@ -171,7 +171,7 @@ if option == "Text Generation":
             st.warning("Please enter a prompt.")
 
 elif option == "Text Summarization":
-    st.title("Upload Engineering Research Paper for Summarization")
+    st.title("Upload Document for Summarization")
     uploaded_file = st.file_uploader("Upload your research paper", type=["pdf", "docx", "doc"])
     
     if uploaded_file:
@@ -195,7 +195,7 @@ elif option == "Text Summarization":
             st.write(summary)
 
 elif option == "Data Visualization":
-    st.title("Upload Data for Engineering Visualization")
+    st.title("Upload Dataset for Visualization")
     uploaded_file = st.file_uploader("Upload your CSV file", type=["csv"])
     if uploaded_file:
         data = pd.read_csv(uploaded_file)
@@ -231,13 +231,13 @@ elif option == "Data Visualization":
             with open(chart_image_path, "rb") as file:
                 st.download_button("Download Chart", file, file_name="chart.png")
 
-elif option == "Chat with Research Assistant":
-    st.title("Chat with Engineering Research Assistant")
+elif option == "Chat with your Documents":
+    st.title("Chat with any of Document of your choice")
 
     if 'conversation' not in st.session_state:
         st.session_state['conversation'] = []
 
-    uploaded_file = st.file_uploader("Upload your research paper", type=["pdf", "docx", "doc"])
+    uploaded_file = st.file_uploader("Upload your Document", type=["pdf", "docx", "doc"])
 
     if uploaded_file:
         if uploaded_file.type == "application/pdf":
@@ -251,14 +251,14 @@ elif option == "Chat with Research Assistant":
         
         if 'research_content' in st.session_state:
             # Display a preview of the file content (first 2000 characters, or adjust as needed)
-            st.write("**Preview of your uploaded research paper:**")
+            st.write("**Preview of your uploaded Document:**")
             preview_length = 100000  # You can adjust this length based on the content size
             st.text_area("File Preview", st.session_state['research_content'][:preview_length], height=300)
-            st.write("You can now ask questions related to your research paper.")
+            st.write("You can now ask questions related to your Uploaded document.")
 
-    st.subheader("Ask questions about your research paper")
+    st.subheader("Ask questions about your Document")
 
-    user_input = st.text_input("Enter your question related to the research:")
+    user_input = st.text_input("Enter your question related to the document:")
 
     if st.button("Ask"):
         if 'research_content' in st.session_state and user_input:
