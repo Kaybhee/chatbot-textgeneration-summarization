@@ -162,8 +162,8 @@ st.sidebar.title("Choose Functionality")
 option = st.sidebar.radio("Select an option", ["Text Generation", "Text Summarization", "Data Visualization", "Chat with PDF"])
 
 if option == "Text Generation":
-    st.title("Engineering Research Assistant")
-    prompt = st.text_input("Enter a prompt related to petroleum or engineering:")
+    st.title("Question-answering bot")
+    prompt = st.text_input("Enter any prompt of your choice:")
     if st.button("Generate Text"):
         if prompt:
             generate_text_with_groq_streaming(prompt)
