@@ -159,11 +159,11 @@ def generate_response_with_groq(prompt, context):
     return completion.choices[0].message.content
 
 st.sidebar.title("Choose Functionality")
-option = st.sidebar.radio("Select an option", ["Text Generation", "Text Summarization", "Data Visualization", "Chat with Your Document"])
+option = st.sidebar.radio("Select an option", ["Text Generation", "Text Summarization", "Data Visualization", "Chat with PDF"])
 
 if option == "Text Generation":
-    st.title("Question and answering chatbot")
-    prompt = st.text_input("Enter a any prompt of your choice:")
+    st.title("Engineering Research Assistant")
+    prompt = st.text_input("Enter a prompt related to petroleum or engineering:")
     if st.button("Generate Text"):
         if prompt:
             generate_text_with_groq_streaming(prompt)
@@ -171,18 +171,18 @@ if option == "Text Generation":
             st.warning("Please enter a prompt.")
 
 elif option == "Text Summarization":
-    st.title("Upload Document for Summarization")
-    uploaded_file = st.file_uploader("Upload your research paper", type=["pdf", "docx", "doc"])
+    st.title("Upload document for Summarization")
+    uploaded_file = st.file_uploader("Upload your Document", type=["pdf", "docx", "doc"])
     
     if uploaded_file:
         if uploaded_file.type == "application/pdf":
-            st.write("Extracting text from PDF and summarizing the paper...")
+            st.write("Extracting text from PDF and summarizing the document...")
             paper_text = extract_text_from_pdf(uploaded_file)
         elif uploaded_file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-            st.write("Extracting text from DOCX and summarizing the paper...")
+            st.write("Extracting text from DOCX and summarizing the document...")
             paper_text = extract_text_from_docx(uploaded_file)
         elif uploaded_file.type == "application/msword":
-            st.write("Extracting text from DOC and summarizing the paper...")
+            st.write("Extracting text from DOC and summarizing the document...")
             paper_text = extract_text_from_doc(uploaded_file)
         else:
             st.error("Unsupported file type. Please upload a PDF, DOCX, or DOC file.")
@@ -231,13 +231,13 @@ elif option == "Data Visualization":
             with open(chart_image_path, "rb") as file:
                 st.download_button("Download Chart", file, file_name="chart.png")
 
-elif option == "Chat with your Documents":
-    st.title("Chat with any of Document of your choice")
+elif option == "Chat with PDF":
+    st.title("Chat with any document of your choice")
 
     if 'conversation' not in st.session_state:
         st.session_state['conversation'] = []
 
-    uploaded_file = st.file_uploader("Upload your Document", type=["pdf", "docx", "doc"])
+    uploaded_file = st.file_uploader("Upload your research document", type=["pdf", "docx", "doc"])
 
     if uploaded_file:
         if uploaded_file.type == "application/pdf":
@@ -250,13 +250,12 @@ elif option == "Chat with your Documents":
             st.error("Unsupported file type. Please upload a PDF, DOCX, or DOC file.")
         
         if 'research_content' in st.session_state:
-            # Display a preview of the file content (first 2000 characters, or adjust as needed)
-            st.write("**Preview of your uploaded Document:**")
-            preview_length = 100000  # You can adjust this length based on the content size
+            st.write("**Preview of your uploaded document:**")
+            preview_length = 100000 
             st.text_area("File Preview", st.session_state['research_content'][:preview_length], height=300)
-            st.write("You can now ask questions related to your Uploaded document.")
+            st.write("You can now ask questions related to your research paper.")
 
-    st.subheader("Ask questions about your Document")
+    st.subheader("Ask questions about your document")
 
     user_input = st.text_input("Enter your question related to the document:")
 
